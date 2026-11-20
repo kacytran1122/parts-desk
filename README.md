@@ -99,3 +99,7 @@ This is a training exercise on a fictional record. A human inspector determines 
 The web/ directory deploys a stateless FastAPI image analyzer and a public training worksheet to Vercel. It decodes the actual QR and analyzes the certificate image with OCR. Inspection cases and footer evidence persist in IndexedDB on the user's browser. Uploaded photos are processed by the Python function, with a 4 MB request limit. Use synthetic exercise documents on the public site.
 
 Deploy from web/ with the Vercel CLI. The original src/partsdesk service remains the persistent live-call implementation. Live Chert FaceTime requires a long-running worker, the assigned line, and credentials, which are configured separately. The public deployment runs the training inspection flow.
+
+Public workspace: https://parts-desk-zeta.vercel.app/
+
+The Vercel deployment belongs to the Fluent team (jackdvngs-projects). OCR package RapidOCR 1.4.4 is vendored under web/rapidocr_onnxruntime with its license under web/ocr-licenses to avoid installing duplicate OpenCV distributions in the Python function. GitHub-driven deploys use web/ as the project root.
