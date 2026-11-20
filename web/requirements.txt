@@ -1,0 +1,6 @@
+fastapi>=0.115,<1
+python-multipart>=0.0.20
+pillow>=11,<14
+numpy>=2,<3
+opencv-python-headless>=4.11,<5
+rapidocr-onnxruntime==1.4.4

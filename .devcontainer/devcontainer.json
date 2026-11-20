@@ -1,0 +1,7 @@
+{
+  "name": "Parts Desk",
+  "build": {"dockerfile": "Dockerfile"},
+  "postCreateCommand": "uv sync --locked --extra facetime && uv run python -m partsdesk.vision.ocr --warm",
+  "forwardPorts": [8000],
+  "portsAttributes": {"8000": {"label": "Parts Desk inspector", "onAutoForward": "notify"}}
+}

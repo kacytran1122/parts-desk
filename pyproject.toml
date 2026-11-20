@@ -1,0 +1,56 @@
+[project]
+name = "parts-desk"
+version = "0.3.0"
+description = "Training receiving-inspection worksheet: FaceTime tag capture, iMessage certificate photo, independent evidence findings."
+requires-python = ">=3.12,<3.14"
+dependencies = [
+  "fastapi>=0.162,<1",
+  "uvicorn>=0.54,<1",
+  "httpx>=0.28,<1",
+  "pydantic>=2.14,<3",
+  "pillow>=13,<14",
+  "numpy>=2.4,<3",
+  "opencv-python>=4.11,<5",
+  "rapidocr-onnxruntime==1.4.4",
+  "python-multipart>=0.0.33",
+]
+
+[project.optional-dependencies]
+facetime = ["livekit>=1.2,<2", "livekit-api>=1.2,<2"]
+
+[dependency-groups]
+dev = ["pytest>=8", "pytest-cov>=6"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/partsdesk"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "B", "UP", "SIM", "S"]
+# B008: FastAPI declares dependencies with Depends()/Body()/File() defaults by design.
+ignore = ["B008"]
+
+[tool.ruff.lint.per-file-ignores]
+# Tests use assert and fake, clearly labelled secrets.
+"tests/*" = ["S101", "S105", "S106", "S107"]
+
+[tool.coverage.run]
+source = ["partsdesk"]
+# The LiveKit media worker needs a live room and the Chert bridge; it is
+# exercised in the rehearsal checklist, and its pure helpers are unit tested.
+omit = ["*/partsdesk/live/worker.py"]
+
+[tool.coverage.report]
+show_missing = true
+fail_under = 80
