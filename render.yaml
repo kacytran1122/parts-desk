@@ -1,0 +1,23 @@
+# Persistent media process. Do not scale replicas/workers above one.
+# Deploying this blueprint creates a paid service and disk; review Render's quote.
+services:
+  - type: web
+    name: parts-desk-live
+    runtime: docker
+    plan: starter
+    region: oregon
+    numInstances: 1
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /healthz
+    disk:
+      name: parts-desk-evidence
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: PARTS_DESK_OPS_TOKEN
+        generateValue: true
+      - key: PARTS_DESK_DATA_DIR
+        value: /var/data
+      # Bootstrap without calling anyone; enable only after credentials are entered.
+      - key: PARTS_DESK_LIVE
+        value: "0"

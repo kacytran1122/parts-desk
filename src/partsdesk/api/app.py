@@ -105,6 +105,11 @@ def create_app(settings: Settings | None = None, *,
     app.include_router(routes_chert.router)
     app.mount("/static", StaticFiles(directory=STATIC), name="static")
 
+    @app.get("/healthz", include_in_schema=False)
+    async def health() -> dict[str, str]:
+        # Liveness only. Credential readiness stays behind operator authentication.
+        return {"status": "ok"}
+
     @app.get("/", include_in_schema=False)
     async def index() -> FileResponse:
         return FileResponse(STATIC / "index.html")

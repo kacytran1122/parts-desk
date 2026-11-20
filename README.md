@@ -85,8 +85,8 @@ Tests run against the real fixtures (QR, alignment, OCR) and mock Chert with `ht
 
 ## Security notes
 
-- Only `POST /api/chert/messages` is public. It verifies an HMAC over the raw body, rejects stale timestamps, deduplicates event IDs, accepts one photo from the one test phone, and only inside an armed 10-minute window.
-- Every other route needs the operator bearer token. Without a token, only localhost drill mode is allowed, and cross-site requests are refused.
+- `POST /api/chert/messages` verifies an HMAC over the raw body, rejects stale timestamps, deduplicates event IDs, accepts one photo from the one test phone, and only inside an armed 10-minute window.
+- Inspection APIs need the operator bearer token. The worksheet shell, static exercise assets, and minimal `/healthz` liveness endpoint are public. Without a token, only localhost drill mode is allowed, and cross-site requests are refused.
 - Camera and OCR text is stored as data. It never selects a workflow step, and the stage machine only moves on inspector commands.
 - Evidence files are private on disk, hashed, and served with `no-store`. Rejected candidates lose their crop. Caller video frames stay in memory.
 - Credentials stay in the server environment. They are never written to the database, returned by the API, or logged.
@@ -101,5 +101,7 @@ The web/ directory deploys a stateless FastAPI image analyzer and a public train
 Deploy from web/ with the Vercel CLI. The original src/partsdesk service remains the persistent live-call implementation. Live Chert FaceTime requires a long-running worker, the assigned line, and credentials, which are configured separately. The public deployment runs the training inspection flow.
 
 Public workspace: https://parts-desk-zeta.vercel.app/
+
+Persistent FaceTime/iMessage hosting and exact credential locations: [Live setup guide](docs/LIVE-SETUP.md). The root Dockerfile and `render.yaml` package the media service; live deployment is pending available hosting and provider credentials.
 
 The Vercel deployment belongs to the Fluent team (jackdvngs-projects). OCR package RapidOCR 1.4.4 is vendored under web/rapidocr_onnxruntime with its license under web/ocr-licenses to avoid installing duplicate OpenCV distributions in the Python function. GitHub-driven deploys use web/ as the project root.
